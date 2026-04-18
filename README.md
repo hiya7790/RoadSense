@@ -1,4 +1,4 @@
-# 🚗 VisionSuspend — Intelligent Road Surface Classification for Adaptive Suspension
+# 🚗 RoadSense — Intelligent Road Surface Classification for Adaptive Suspension
 
 > A real-time computer vision system that classifies road surface conditions and recommends optimal vehicle suspension settings using deep learning and interactive simulation.
 
@@ -6,7 +6,7 @@
 
 ## 📌 Project Overview
 
-**VisionSuspend** is an intelligent, vision-based system that classifies road surface conditions in real time and recommends optimal suspension settings for improved vehicle comfort and safety. The system leverages a camera feed as input and applies a Convolutional Neural Network (CNN) to identify road types, enabling adaptive suspension responses.
+It is an intelligent, vision-based system that classifies road surface conditions in real time and recommends optimal suspension settings for improved vehicle comfort and safety. The system leverages a camera feed as input and applies a Convolutional Neural Network (CNN) to identify road types, enabling adaptive suspension responses.
 
 The dataset consists of four road surface categories — **smooth asphalt**, **gravel**, **pothole**, and **wet road** — with approximately 200–300 images per class collected from publicly available datasets such as the RTK dataset, supplemented with curated images from online sources. To enhance model robustness and generalization, extensive data augmentation is applied using the **Albumentations** library, including brightness variation, motion blur, flipping, and noise injection.
 
