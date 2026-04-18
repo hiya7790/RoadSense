@@ -1,0 +1,2 @@
+# Trained model checkpoints saved here by train.py
+# .h5 files are excluded from git via .gitignore
