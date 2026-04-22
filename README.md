@@ -1,10 +1,10 @@
-# 🚗 RoadSense — Intelligent Road Surface Classification for Adaptive Suspension
+# RoadSense — Intelligent Road Surface Classification for Adaptive Suspension
 
 > A real-time computer vision system that classifies road surface conditions and recommends optimal vehicle suspension settings using deep learning and interactive simulation.
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 It is an intelligent, vision-based system that classifies road surface conditions in real time and recommends optimal suspension settings for improved vehicle comfort and safety. The system leverages a camera feed as input and applies a Convolutional Neural Network (CNN) to identify road types, enabling adaptive suspension responses.
 
@@ -25,7 +25,7 @@ VisionSuspend demonstrates the integration of computer vision, deep learning, an
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 visionsuspend/
@@ -51,7 +51,7 @@ visionsuspend/
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### 1. Clone the repository
 ```bash
@@ -72,7 +72,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Train the model
 ```bash
@@ -96,7 +96,7 @@ python simulation/dashboard.py --model models/saved/mobilenetv2_best.h5
 
 ---
 
-## 🧠 Model Details
+## Model Details
 
 - **Architecture:** MobileNetV2 (pretrained on ImageNet)
 - **Fine-tuning:** Last few layers unfrozen for task-specific learning
@@ -106,7 +106,7 @@ python simulation/dashboard.py --model models/saved/mobilenetv2_best.h5
 
 ---
 
-## 🎮 Simulation Dashboard Features
+## Simulation Dashboard Features
 
 - Live video feed with real-time classification overlay
 - Dynamic suspension stiffness dial (Soft / Medium / Firm / Adaptive)
@@ -115,7 +115,7 @@ python simulation/dashboard.py --model models/saved/mobilenetv2_best.h5
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 See `requirements.txt` for the full list. Key libraries:
 
@@ -127,7 +127,7 @@ See `requirements.txt` for the full list. Key libraries:
 
 ---
 
-## 🔮 Future Work
+## Future Work
 
 - Deploy on edge hardware (Raspberry Pi / Jetson Nano)
 - Expand dataset with more road types (snow, cobblestone)
@@ -136,6 +136,6 @@ See `requirements.txt` for the full list. Key libraries:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
