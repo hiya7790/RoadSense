@@ -32,6 +32,7 @@ data/augmented/
 logs/
 runs/
 *.log
+*.csv
 
 # OS
 .DS_Store
