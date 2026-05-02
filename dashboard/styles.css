@@ -1,0 +1,853 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RoadSense — Adaptive Suspension Dashboard
+   Design System: Kinetic Neural OS (from design.md)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design Tokens (from design.md YAML frontmatter) ──────────────────────── */
+:root {
+  /* Surfaces */
+  --surface:                 #131314;
+  --surface-dim:             #131314;
+  --surface-bright:          #3a393a;
+  --surface-container-lowest:#0e0e0f;
+  --surface-container-low:   #1c1b1c;
+  --surface-container:       #201f20;
+  --surface-container-high:  #2a2a2b;
+  --surface-container-highest:#353436;
+  --on-surface:              #e5e2e3;
+  --on-surface-variant:      #c4c9ac;
+  --inverse-surface:         #e5e2e3;
+  --inverse-on-surface:      #313031;
+  --outline:                 #8e9379;
+  --outline-variant:         #444933;
+  --surface-tint:            #abd600;
+  --surface-variant:         #353436;
+
+  /* Primary — Neon Lime */
+  --primary:                 #ffffff;
+  --on-primary:              #283500;
+  --primary-container:       #c3f400;
+  --on-primary-container:    #556d00;
+  --inverse-primary:         #506600;
+  --primary-fixed:           #c3f400;
+  --primary-fixed-dim:       #abd600;
+
+  /* Secondary — Cyan */
+  --secondary:               #b9f1ff;
+  --on-secondary:            #00363f;
+  --secondary-container:     #00e0ff;
+  --on-secondary-container:  #005f6d;
+
+  /* Tertiary — Amber */
+  --tertiary:                #ffffff;
+  --on-tertiary:             #452b00;
+  --tertiary-container:      #ffddb3;
+  --on-tertiary-container:   #8a5b00;
+  --tertiary-fixed-dim:      #ffb950;
+
+  /* Error */
+  --error:                   #ffb4ab;
+  --on-error:                #690005;
+  --error-container:         #93000a;
+  --on-error-container:      #ffdad6;
+
+  /* Background */
+  --background:              #131314;
+  --on-background:           #e5e2e3;
+
+  /* Explicit brand accents from design.md prose */
+  --accent-lime:             #CCFF00;
+  --accent-cyan:             #00E0FF;
+  --accent-amber:            #FFAB00;
+
+  /* Rounded (from design.md) */
+  --rounded-sm:   0.25rem;
+  --rounded:      0.5rem;
+  --rounded-md:   0.75rem;
+  --rounded-lg:   1rem;
+  --rounded-xl:   1.5rem;
+  --rounded-full: 9999px;
+
+  /* Spacing (from design.md) */
+  --unit:               4px;
+  --gutter:             16px;
+  --margin:             32px;
+  --container-padding:  24px;
+
+  /* Typography (from design.md) */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Glassmorphism tokens (from design.md Elevation section) */
+  --glass-bg:      rgba(32, 31, 32, 0.55);
+  --glass-blur:    24px;
+  --glass-border:  linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
+  --hairline:      1px solid rgba(255,255,255,0.06);
+
+  /* Glow */
+  --glow-lime:     0 0 20px rgba(204, 255, 0, 0.25);
+  --glow-cyan:     0 0 16px rgba(0, 224, 255, 0.2);
+  --glow-amber:    0 0 16px rgba(255, 171, 0, 0.25);
+  --glow-error:    0 0 16px rgba(255, 180, 171, 0.3);
+}
+
+
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--on-surface);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+/* ── Typography Utilities (from design.md) ─────────────────────────────────── */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.headline-lg {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.headline-md {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.body-lg {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.body-md {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.label-caps {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+.data-num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.0;
+}
+
+
+/* ── Glass Card (from design.md: Elevation & Depth) ────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--hairline);
+  border-radius: var(--rounded);
+  padding: var(--container-padding);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hairline gradient border overlay */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--glass-border);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-card:hover {
+  border-color: rgba(255,255,255,0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gutter);
+}
+
+
+/* ── Top Bar ───────────────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--margin);
+  background: var(--surface-container-lowest);
+  border-bottom: var(--hairline);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar__logo-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--rounded-full);
+  background: var(--accent-lime);
+  box-shadow: var(--glow-lime);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(204,255,0,0.4); }
+  50%      { opacity: 0.6; box-shadow: 0 0 20px rgba(204,255,0,0.7); }
+}
+
+.topbar__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.01em;
+}
+
+.topbar__subtitle {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-lime);
+  text-transform: uppercase;
+  margin-left: 4px;
+  padding: 2px 8px;
+  border: 1px solid rgba(204,255,0,0.3);
+  border-radius: var(--rounded-full);
+}
+
+.topbar__status-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.topbar__metrics {
+  display: flex;
+  gap: 24px;
+}
+
+
+/* ── Status Chips (from design.md Components) ──────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: var(--rounded-full);
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  border: 1px solid transparent;
+  transition: all 0.35s ease;
+}
+
+.chip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--rounded-full);
+  background: var(--outline);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.chip--active {
+  border-color: rgba(204,255,0,0.25);
+  color: var(--accent-lime);
+}
+
+.chip--active .chip__dot {
+  background: var(--accent-lime);
+  box-shadow: 0 0 6px rgba(204,255,0,0.5);
+}
+
+.chip--warning {
+  border-color: rgba(255,171,0,0.25);
+  color: var(--accent-amber);
+}
+
+.chip--warning .chip__dot {
+  background: var(--accent-amber);
+  box-shadow: 0 0 6px rgba(255,171,0,0.5);
+}
+
+.chip--error {
+  border-color: rgba(255,180,171,0.25);
+  color: var(--error);
+}
+
+.chip--error .chip__dot {
+  background: var(--error);
+  box-shadow: 0 0 6px rgba(255,180,171,0.5);
+}
+
+
+/* ── Inline Metrics ────────────────────────────────────────────────────────── */
+.metric-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.metric-inline__label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+}
+
+.metric-inline__value {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--on-surface);
+  line-height: 1;
+}
+
+.metric-inline__unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--on-surface-variant);
+  margin-left: 2px;
+}
+
+
+/* ── Dashboard Grid (12-col fluid grid from design.md) ─────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap: var(--gutter);
+  padding: var(--gutter);
+  height: calc(100vh - 52px);
+  min-height: 0;
+}
+
+
+/* ── LEFT: Suspension Panel ────────────────────────────────────────────────── */
+.panel-suspension {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+}
+
+.suspension-hero {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.suspension-mode {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-lime);
+  text-transform: uppercase;
+  text-shadow: var(--glow-lime);
+  transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+.suspension-mode[data-mode="Soft"]     { color: var(--accent-lime); text-shadow: var(--glow-lime); }
+.suspension-mode[data-mode="Medium"]   { color: var(--accent-cyan); text-shadow: var(--glow-cyan); }
+.suspension-mode[data-mode="Firm"]     { color: var(--error); text-shadow: var(--glow-error); }
+.suspension-mode[data-mode="Adaptive"] { color: var(--accent-amber); text-shadow: var(--glow-amber); }
+
+.suspension-action {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.suspension-params {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.param-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 12px;
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-sm);
+}
+
+.param-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--on-surface-variant);
+}
+
+.param-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--on-surface);
+}
+
+.param-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--on-surface-variant);
+}
+
+
+/* ── Arc Gauge (from design.md: segmented arcs with glow-trail) ────────────── */
+.arc-gauge-container {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.arc-gauge {
+  width: 180px;
+  height: 110px;
+}
+
+.arc-gauge__track {
+  fill: none;
+  stroke: var(--surface-container-high);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.arc-gauge__fill {
+  fill: none;
+  stroke: var(--accent-lime);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 251.3;  /* full arc length */
+  stroke-dashoffset: 251.3;
+  transition: stroke-dashoffset 0.6s ease, stroke 0.5s ease;
+  filter: drop-shadow(0 0 6px rgba(204,255,0,0.4));
+}
+
+.arc-gauge__label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  fill: var(--on-surface-variant);
+  text-anchor: middle;
+}
+
+
+/* ── CENTER: Camera + Probabilities ────────────────────────────────────────── */
+.panel-center {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+  min-height: 0;
+}
+
+.camera-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.camera-wrapper {
+  flex: 1;
+  position: relative;
+  background: var(--surface-container-lowest);
+  border-radius: var(--rounded-sm);
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.camera-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--rounded-sm);
+}
+
+.camera-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(14,14,15,0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--rounded);
+  border: var(--hairline);
+}
+
+.camera-overlay__class {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-lime);
+  text-transform: uppercase;
+}
+
+.camera-overlay__conf {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+}
+
+.feed-status {
+  color: var(--accent-amber);
+  animation: blink-status 1.2s ease-in-out infinite;
+}
+
+@keyframes blink-status {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+.feed-status.connected {
+  color: var(--accent-lime);
+  animation: none;
+}
+
+
+/* ── Probability Bars (from design.md: glow-trail bars) ────────────────────── */
+.probabilities-card {
+  flex-shrink: 0;
+}
+
+.prob-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prob-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 52px;
+  align-items: center;
+  gap: 12px;
+}
+
+.prob-row__label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+}
+
+.prob-row__track {
+  height: 10px;
+  background: var(--surface-container-high);
+  border-radius: var(--rounded-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.prob-row__fill {
+  height: 100%;
+  border-radius: var(--rounded-full);
+  transition: width 0.4s ease;
+  position: relative;
+}
+
+/* Class-specific colors (from design.md) */
+.prob-row__fill--smooth {
+  background: var(--accent-lime);
+  box-shadow: 0 0 10px rgba(204,255,0,0.35);
+}
+
+.prob-row__fill--gravel {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(0,224,255,0.3);
+}
+
+.prob-row__fill--pothole {
+  background: var(--error);
+  box-shadow: 0 0 10px rgba(255,180,171,0.35);
+}
+
+.prob-row__fill--wet {
+  background: var(--accent-amber);
+  box-shadow: 0 0 10px rgba(255,171,0,0.3);
+}
+
+/* Active class glow (design.md: active elements get outer glow) */
+.prob-row.active .prob-row__track {
+  box-shadow: 0 0 12px rgba(204,255,0,0.15);
+}
+
+.prob-row__value {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-surface);
+  text-align: right;
+}
+
+
+/* ── RIGHT: Sidebar ────────────────────────────────────────────────────────── */
+.panel-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+  min-height: 0;
+}
+
+/* Model card */
+.model-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.model-info__type {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-lime);
+  text-transform: uppercase;
+}
+
+.model-info__path {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--on-surface-variant);
+  word-break: break-all;
+}
+
+
+/* ── Controls (Toggles from design.md Components) ──────────────────────────── */
+.controls-card {
+  flex-shrink: 0;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.control-row + .control-row {
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.control-label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--on-surface);
+}
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle__slider {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-container-high);
+  border-radius: var(--rounded-full);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.toggle__slider::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: var(--on-surface-variant);
+  border-radius: var(--rounded-full);
+  transition: transform 0.3s ease, background 0.3s;
+}
+
+.toggle input:checked + .toggle__slider {
+  background: rgba(204,255,0,0.25);
+  box-shadow: 0 0 10px rgba(204,255,0,0.2);
+}
+
+.toggle input:checked + .toggle__slider::after {
+  transform: translateX(20px);
+  background: var(--accent-lime);
+}
+
+
+/* ── History Canvas ────────────────────────────────────────────────────────── */
+.history-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.history-canvas {
+  flex: 1;
+  width: 100%;
+  min-height: 80px;
+  border-radius: var(--rounded-sm);
+}
+
+
+/* ── Session Stats ─────────────────────────────────────────────────────────── */
+.session-card {
+  flex-shrink: 0;
+}
+
+.session-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gutter);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-item__value {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.stat-item__label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+}
+
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .topbar__status-chips {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .topbar__metrics {
+    gap: 16px;
+  }
+
+  .dashboard-grid {
+    padding: 8px;
+    gap: 8px;
+  }
+}
+
+
+/* ── Animations (from design.md: visual indicators, micro-animations) ──────── */
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.glass-card {
+  animation: slide-in 0.5s ease forwards;
+}
+
+.panel-suspension .glass-card { animation-delay: 0.05s; }
+.panel-center .camera-card    { animation-delay: 0.1s; }
+.panel-center .probabilities-card { animation-delay: 0.15s; }
+.panel-right .glass-card:nth-child(1) { animation-delay: 0.1s; }
+.panel-right .glass-card:nth-child(2) { animation-delay: 0.15s; }
+.panel-right .glass-card:nth-child(3) { animation-delay: 0.2s; }
+.panel-right .glass-card:nth-child(4) { animation-delay: 0.25s; }
+
+
+/* ── Scrollbar (minimal, on-brand) ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-container-highest);
+  border-radius: var(--rounded-full);
+}

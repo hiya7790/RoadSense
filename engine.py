@@ -17,6 +17,7 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Optional, Dict
 
+
 import cv2
 import numpy as np
 import tensorflow as tf
