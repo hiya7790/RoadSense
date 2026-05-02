@@ -23,6 +23,7 @@ import numpy as np
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 import uvicorn
 
@@ -183,6 +184,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Dashboard Static Files ───────────────────────────────────────────────────
+
+dashboard_dir = os.path.join(os.path.dirname(__file__), "dashboard")
+if os.path.isdir(dashboard_dir):
+    app.mount("/dashboard", StaticFiles(directory=dashboard_dir, html=True), name="dashboard")
 
 
 # ── REST Endpoints ───────────────────────────────────────────────────────────
@@ -482,6 +489,7 @@ def main():
 
     print(f"\n{'='*50}")
     print(f"  RoadSense API Server")
+    print(f"  Dashboard:    http://localhost:{args.port}/dashboard/")
     print(f"  Swagger docs: http://localhost:{args.port}/docs")
     print(f"  WebSocket:    ws://localhost:{args.port}/ws/live")
     print(f"  Video stream: http://localhost:{args.port}/api/stream/video")

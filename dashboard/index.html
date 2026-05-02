@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RoadSense Adaptive Suspension Dashboard — Real-time road surface classification and suspension telemetry." />
+  <title>RoadSense — Adaptive Suspension Dashboard</title>
+
+  <!-- Fonts from design.md: Space Grotesk + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ── Top Bar ─────────────────────────────────────────────────────── -->
+  <header id="topbar" class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__logo-pulse" id="pulse-indicator"></span>
+      <h1 class="topbar__title">RoadSense</h1>
+      <span class="topbar__subtitle">ADAPTIVE SUSPENSION</span>
+    </div>
+    <div class="topbar__status-chips">
+      <span class="chip chip--active" id="chip-engine">
+        <span class="chip__dot"></span>ENGINE
+      </span>
+      <span class="chip" id="chip-camera">
+        <span class="chip__dot"></span>CAMERA
+      </span>
+      <span class="chip" id="chip-model">
+        <span class="chip__dot"></span>MODEL
+      </span>
+    </div>
+    <div class="topbar__metrics">
+      <div class="metric-inline">
+        <span class="metric-inline__label">FPS</span>
+        <span class="metric-inline__value" id="metric-fps">0.0</span>
+      </div>
+      <div class="metric-inline">
+        <span class="metric-inline__label">LATENCY</span>
+        <span class="metric-inline__value" id="metric-latency">0<span class="metric-inline__unit">ms</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main Grid ───────────────────────────────────────────────────── -->
+  <main id="dashboard-grid" class="dashboard-grid">
+
+    <!-- ── LEFT: Suspension Panel ─────────────────────────────────── -->
+    <section id="panel-suspension" class="glass-card panel-suspension">
+      <div class="card-header">
+        <span class="label-caps">SUSPENSION STATE</span>
+      </div>
+      <div class="suspension-hero">
+        <div class="suspension-mode" id="suspension-mode">—</div>
+        <div class="suspension-action" id="suspension-action">Waiting for data…</div>
+      </div>
+      <div class="suspension-params">
+        <div class="param-row">
+          <span class="param-label">STIFFNESS</span>
+          <span class="param-value" id="param-stiffness">0 <span class="param-unit">N/m</span></span>
+        </div>
+        <div class="param-row">
+          <span class="param-label">DAMPING</span>
+          <span class="param-value" id="param-damping">0 <span class="param-unit">Ns/m</span></span>
+        </div>
+      </div>
+
+      <!-- Stiffness gauge arc -->
+      <div class="arc-gauge-container">
+        <svg class="arc-gauge" viewBox="0 0 200 120">
+          <path class="arc-gauge__track" d="M 20 100 A 80 80 0 0 1 180 100" />
+          <path class="arc-gauge__fill" id="gauge-stiffness" d="M 20 100 A 80 80 0 0 1 180 100" />
+          <text class="arc-gauge__label" x="100" y="95">STIFFNESS</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ── CENTER: Camera Feed + Probability Bars ─────────────────── -->
+    <section id="panel-center" class="panel-center">
+
+      <!-- Camera feed -->
+      <div class="glass-card camera-card" id="camera-card">
+        <div class="card-header">
+          <span class="label-caps">LIVE FEED</span>
+          <span class="label-caps feed-status" id="feed-status">CONNECTING…</span>
+        </div>
+        <div class="camera-wrapper">
+          <img
+            id="camera-feed"
+            class="camera-feed"
+            alt="Live camera feed"
+          />
+          <div class="camera-overlay" id="camera-overlay">
+            <span class="camera-overlay__class" id="overlay-class">—</span>
+            <span class="camera-overlay__conf" id="overlay-conf">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Probability bars -->
+      <div class="glass-card probabilities-card" id="probabilities-card">
+        <div class="card-header">
+          <span class="label-caps">CLASS PROBABILITIES</span>
+          <span class="label-caps" id="prob-mode-label">RAW</span>
+        </div>
+        <div class="prob-bars" id="prob-bars">
+          <div class="prob-row" data-class="smooth">
+            <span class="prob-row__label">SMOOTH</span>
+            <div class="prob-row__track">
+              <div class="prob-row__fill prob-row__fill--smooth" id="bar-smooth" style="width:0%"></div>
+            </div>
+            <span class="prob-row__value" id="val-smooth">0%</span>
+          </div>
+          <div class="prob-row" data-class="gravel">
+            <span class="prob-row__label">GRAVEL</span>
+            <div class="prob-row__track">
+              <div class="prob-row__fill prob-row__fill--gravel" id="bar-gravel" style="width:0%"></div>
+            </div>
+            <span class="prob-row__value" id="val-gravel">0%</span>
+          </div>
+          <div class="prob-row" data-class="pothole">
+            <span class="prob-row__label">POTHOLE</span>
+            <div class="prob-row__track">
+              <div class="prob-row__fill prob-row__fill--pothole" id="bar-pothole" style="width:0%"></div>
+            </div>
+            <span class="prob-row__value" id="val-pothole">0%</span>
+          </div>
+          <div class="prob-row" data-class="wet">
+            <span class="prob-row__label">WET</span>
+            <div class="prob-row__track">
+              <div class="prob-row__fill prob-row__fill--wet" id="bar-wet" style="width:0%"></div>
+            </div>
+            <span class="prob-row__value" id="val-wet">0%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RIGHT: Metrics + History ───────────────────────────────── -->
+    <section id="panel-right" class="panel-right">
+
+      <!-- Active model card -->
+      <div class="glass-card model-card" id="model-card">
+        <div class="card-header">
+          <span class="label-caps">ACTIVE MODEL</span>
+        </div>
+        <div class="model-info">
+          <span class="model-info__type" id="model-type">—</span>
+          <span class="model-info__path" id="model-path">No model loaded</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="glass-card controls-card" id="controls-card">
+        <div class="card-header">
+          <span class="label-caps">CONTROLS</span>
+        </div>
+        <div class="control-row">
+          <span class="control-label">GradCAM Overlay</span>
+          <label class="toggle" id="toggle-gradcam">
+            <input type="checkbox" id="gradcam-checkbox" />
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+        <div class="control-row">
+          <span class="control-label">Smoothed View</span>
+          <label class="toggle" id="toggle-smoothed">
+            <input type="checkbox" id="smoothed-checkbox" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Prediction history timeline -->
+      <div class="glass-card history-card" id="history-card">
+        <div class="card-header">
+          <span class="label-caps">PREDICTION TIMELINE</span>
+        </div>
+        <canvas id="history-canvas" class="history-canvas"></canvas>
+      </div>
+
+      <!-- Session stats -->
+      <div class="glass-card session-card" id="session-card">
+        <div class="card-header">
+          <span class="label-caps">SESSION</span>
+        </div>
+        <div class="session-stats">
+          <div class="stat-item">
+            <span class="stat-item__value" id="session-duration">00:00</span>
+            <span class="stat-item__label">DURATION</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item__value" id="session-predictions">0</span>
+            <span class="stat-item__label">PREDICTIONS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
